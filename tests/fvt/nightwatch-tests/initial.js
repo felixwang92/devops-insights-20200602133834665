@@ -53,6 +53,6 @@ module.exports = {
     
         await demodoi.waitForElementNotPresent('@table');
 
-        demodoi.expect.element('@invalidCity').text.to.equal('* should be a 5 digit number only');
+        demodoi.expect.element('@invalidCity').text.to.equal('* should be city name');
     },
 };
