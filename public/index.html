@@ -42,10 +42,6 @@
       var marker;
    	  var lat;
    	  var lon;
-   	  var REQUEST = require('request');
-	  var request = REQUEST.defaults( {
-    	strictSSL: false
-	  });
       function initMap() {
       	var hamilton = {lat:-37.78, lng:175.28};
       	var auckland = {lat:-36.85, lng:174.76};
@@ -59,25 +55,25 @@
         var marker2 = new google.maps.Marker({position: auckland, map: map});
         var marker3 = new google.maps.Marker({position: christ, map: map});
         var marker4 = new google.maps.Marker({position: wellington, map: map});
-        var infowindow1 = new google.maps.InfoWindow({
-    		content: info,
-  		});	
         marker1.addListener('click', function() {
     	map.setZoom(8);
     	map.setCenter(marker1.getPosition());
-    	infowindow1.open(map, marker1);
+    	Mark(marker1.getPosition());
   		});
   		marker2.addListener('click', function() {
     	map.setZoom(8);
     	map.setCenter(marker2.getPosition());
+    	Mark(marker2.getPosition());
   		});
   		marker3.addListener('click', function() {
     	map.setZoom(8);
     	map.setCenter(marker3.getPosition());
+    	Mark(marker3.getPosition());
   		});
   		marker4.addListener('click', function() {
     	map.setZoom(8);
     	map.setCenter(marker4.getPosition());
+    	Mark(marker4.getPosition());
   		});
   		map.addListener('click', function(mapsMouseEvent) {
         var posi = mapsMouseEvent.latLng;
@@ -102,26 +98,22 @@
         marker = new google.maps.Marker({position: loc,  map: map});  
         lat= marker.getPosition().lat();
         lon= marker.getPosition().lng();
-        exports.getWeather = function(req, res) {
         var ac = 'https://openweathermap.org/data/2.5/weather?lat='+lat+'&lon'+lon+'&appid=6b7b471967dd0851d0010cdecf28f829';
-        request({
+        $http({
                 method: "GET",
-                url: ac,
-                json: true             
-            }, function(err, resp, body) {
-            	if(err) {
-    		res.status(400).send('Failed to get the data');
-		}else {
-    		if(body.cod === 200) {
-    			var weath = "Conditions are " + body.weather[0].main + " and temperature is " + body.main.temp + ' F';
-    			info = {city: body.name, weather: weath, la:lat,lo:lon};
+                url: ac
+               
+            }).then(function successCallback(response) {
+                var y=JSON.stringify(response); 
+                var z=y.split('"'); 
+                var m=0;
+                while(z[m]!=="main"){m++;}
+                var n=0;
+                while(z[n]!=="temp"){n++;}
+               
+                    info="Weather is:  "+z[m+2]+"  temperature is:  "+z[n+1];
                     addInfoWindow(marker, info);
-                }else {
-                return res.status(400).send({msg:'Failed'});
-				}
-				}
             });
-         };
      }
 
          
