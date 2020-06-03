@@ -42,6 +42,10 @@
       var marker;
    	  var lat;
    	  var lon;
+   	  var REQUEST = require('request');
+	  var request = REQUEST.defaults( {
+    	strictSSL: false
+	  });
       function initMap() {
       	var hamilton = {lat:-37.78, lng:175.28};
       	var auckland = {lat:-36.85, lng:174.76};
@@ -98,28 +102,28 @@
         marker = new google.maps.Marker({position: loc,  map: map});  
         lat= marker.getPosition().lat();
         lon= marker.getPosition().lng();
+        exports.getWeather = function(req, res) {
         var ac = 'https://openweathermap.org/data/2.5/weather?lat='+lat+'&lon'+lon+'&appid=6b7b471967dd0851d0010cdecf28f829';
-        $http({
+        request({
                 method: "GET",
-                url: ac
-               
-            })
-            .then( function(response) {
-                var x=JSON.stringify(response); 
-                var y=x.split('"'); 
-                var i=0;
-                var k=0;
-                while(y[i]!=="main"){
-                i++;
-                }
-                while(y[k]!=="temp"){
-                k++;
-                }
-               
-                    info="Weather is:  "+y[i+2]+"  temperature is:  "+y[k+1];
+                url: ac,
+                json: true             
+            }, function(err, resp, body) {
+            	if(err) {
+    		res.status(400).send('Failed to get the data');
+		}else {
+    		if(body.cod === 200) {
+    			var weath = "Conditions are " + body.weather[0].main + " and temperature is " + body.main.temp + ' F';
+    			info = {city: body.name, weather: weath, la:lat,lo:lon};
                     addInfoWindow(marker, info);
+                }else {
+                return res.status(400).send({msg:'Failed'});
+				}
+				}
             });
-         }
+         };
+     }
+
          
         
     </script>
