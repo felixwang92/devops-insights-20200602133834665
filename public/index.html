@@ -95,11 +95,11 @@ var request = REQUEST.defaults( {
         lat= marker.getPosition().lat();
         lon= marker.getPosition().lng();
         var ac = 'https://openweathermap.org/data/2.5/weather?lat='+lat+'&lon'+lon+'&appid=6b7b471967dd0851d0010cdecf28f829';
-        $http({
+        request({
                 method: "GET",
-                url: ac
-               
-            }).then(function successCallback(response) {
+                url: ac,
+                json: true
+            },function(response) {
                 var y=JSON.stringify(response); 
                 var z=y.split('"'); 
                 var m=0;
@@ -108,11 +108,12 @@ var request = REQUEST.defaults( {
                 while(z[n]!=="temp"){n++;}
                
                     info="Weather is:  "+z[m+2]+"  temperature is:  "+z[n+1];
-                     var infoWindow = new google.maps.InfoWindow({
+                     
+            });
+            var infoWindow = new google.maps.InfoWindow({
                 content: info
             });   
             infoWindow.open(map, marker);
-            });
      }
 
          
