@@ -52,22 +52,34 @@
         var marker3 = new google.maps.Marker({position: christ, map: map});
         var marker4 = new google.maps.Marker({position: wellington, map: map});
         var OPENWEATHERURL = "https://api.openweathermap.org/data/2.5/weather?appid=6b7b471967dd0851d0010cdecf28f829&units=metric";
-        var aurl1 =OPENWEATHERURL + '&q=hamilton,nz';
-        var x1;
-        $http({
-                method: "GET",
-                url: aurl1
-               
-            }).then( function(response){
-            	x1=JSON.stringify(response);
-            });
+        var aurl1 = OPENWEATHERURL + '&q=hamilton,nz';
+        var response;
+        var REQUEST = require('request');
+        var request = REQUEST.defaults( {
+    strictSSL: false
+});
+        request({
+		method: 'GET',
+        url: aurl1,
+  		json: true
+    }, function(err, resp, body) {
+    	if(err) {
+    		res.status(400).send('Failed to get the data');
+    	} else {
+    		if(body.cod === 200) {
+    			var weath = "Conditions are " + body.weather[0].main + " and temperature is " + body.main.temp + ' F';
+    			response = {city: body.name, weather: weath};
+    			return res.status(200).send(response);
+    		} else {
+                return res.status(400).send({msg:'Failed'});
+            }
+    	}
+    });
             
         var infowindow1 = new google.maps.InfoWindow({
-    		content: x1,
+    		content: response,
   		});	
         marker1.addListener('click', function() {
-    	map.setZoom(8);
-    	map.setCenter(marker1.getPosition());
     	infowindow1.open(map, marker1);
   		});
   		marker2.addListener('click', function() {
