@@ -90,7 +90,8 @@ describe('Get Weather', function() {
       ],
       main: {
         temp: 78
-      }
+      },
+      coord:{la:1,lo:1}
     };
 
     const request = function( obj, callback ){
