@@ -38,6 +38,7 @@
     <div id="map"></div>
     <script>
       var map;
+      var info;
       function initMap() {
       	var hamilton = {lat:-37.78, lng:175.28};
       	var auckland = {lat:-36.85, lng:174.76};
@@ -51,9 +52,8 @@
         var marker2 = new google.maps.Marker({position: auckland, map: map});
         var marker3 = new google.maps.Marker({position: christ, map: map});
         var marker4 = new google.maps.Marker({position: wellington, map: map});
-        var check = 'check';
         var infowindow1 = new google.maps.InfoWindow({
-    		content: check,
+    		content: info,
   		});	
         marker1.addListener('click', function() {
     	map.setZoom(8);
@@ -77,7 +77,7 @@
    	  var marker;
    	  var lat;
    	  var lon;
-   	  var info;
+   	  
    	  function addInfoWindow(marker, weather) {
 
             var infoWindow = new google.maps.InfoWindow({
@@ -109,8 +109,6 @@
                 }
                
                     info="Weather is:  "+y[i+2]+"  temperature is:  "+y[k+1];
-                    map.setZoom(8);
-    				map.setCenter(marker.getPosition());
                     addInfoWindow(marker, info);
             });
          }
