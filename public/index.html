@@ -8,6 +8,7 @@
       name="description"
       content="Web site created using create-react-app"
     />
+    <meta charset="utf-8">
     <style>
       #map {
         height:600px;
@@ -67,7 +68,7 @@
         marker1.addListener('click', function() {
     	map.setZoom(8);
     	map.setCenter(marker1.getPosition());
-    	infowindow1.open(map);
+    	infowindow1.open(map, marker1);
   		});
   		marker2.addListener('click', function() {
     	map.setZoom(8);
