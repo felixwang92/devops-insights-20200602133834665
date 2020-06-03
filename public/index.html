@@ -50,7 +50,39 @@
         var marker2 = new google.maps.Marker({position: auckland, map: map});
         var marker3 = new google.maps.Marker({position: christ, map: map});
         var marker4 = new google.maps.Marker({position: wellington, map: map});
-      }
+        var OPENWEATHERURL = "https://api.openweathermap.org/data/2.5/weather?appid=6b7b471967dd0851d0010cdecf28f829&units=metric";
+        var aurl1 =OPENWEATHERURL + '&q=hamilton,nz';
+        var x1;
+        $http({
+                method: "GET",
+                url: aurl1
+               
+            }).then( function(response){
+            	x1=JSON.stringify(response);
+            });
+            
+        var infowindow1 = new google.maps.InfoWindow({
+    		content: x1,
+  		});	
+        marker1.addListener('click', function() {
+    	map.setZoom(8);
+    	map.setCenter(marker1.getPosition());
+    	infowindow1.open(map);
+  		});
+  		marker2.addListener('click', function() {
+    	map.setZoom(8);
+    	map.setCenter(marker2.getPosition());
+  		});
+  		marker3.addListener('click', function() {
+    	map.setZoom(8);
+    	map.setCenter(marker3.getPosition());
+  		});
+  		marker4.addListener('click', function() {
+    	map.setZoom(8);
+    	map.setCenter(marker4.getPosition());
+  		});
+        
+   	}
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCB1SlgercnJb2YHmpjaBw094liiD_MiWI&callback=initMap"
     async defer></script>
