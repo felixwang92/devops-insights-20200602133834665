@@ -39,6 +39,9 @@
     <script>
       var map;
       var info;
+      var marker;
+   	  var lat;
+   	  var lon;
       function initMap() {
       	var hamilton = {lat:-37.78, lng:175.28};
       	var auckland = {lat:-36.85, lng:174.76};
@@ -72,11 +75,15 @@
     	map.setZoom(8);
     	map.setCenter(marker4.getPosition());
   		});
+  		map.addListener('click', function(mapsMouseEvent) {
+        var posi = mapsMouseEvent.latLng;
+        lat = posi.lat();
+        lon = posi.lng();
+        Mark(event.latLng); 
+ 		});
         
    	}
-   	  var marker;
-   	  var lat;
-   	  var lon;
+   	  
    	  
    	  function addInfoWindow(marker, weather) {
 
@@ -113,12 +120,7 @@
             });
          }
          
-        google.maps.event.addListener(map, 'click', function(event) {
-        var posi = event.latLng;
-        lat = posi.lat();
-        lon = posi.lng();
-        Mark(event.latLng); 
- 		});
+        
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCB1SlgercnJb2YHmpjaBw094liiD_MiWI&callback=initMap"
     async defer></script>
