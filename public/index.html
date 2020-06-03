@@ -110,10 +110,12 @@ var request = REQUEST.defaults( {
                     info="Weather is:  "+z[m+2]+"  temperature is:  "+z[n+1];
                      
             });
-            var infoWindow = new google.maps.InfoWindow({
+            var infowindow = new google.maps.InfoWindow({
                 content: info
-            });   
-            infoWindow.open(map, marker);
+            });
+            marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
      }
 
          
